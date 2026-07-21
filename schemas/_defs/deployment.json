@@ -1,0 +1,16 @@
+{
+  "$id": "cdevents/_defs/deployment",
+  "term": "Deployment",
+  "definition": "A Deployment is the act of applying a version of a release unit to an environment. A deployment is a canonical SDLC fact, and it is not the pipeline that performed the deployment, but the change to the running system that resulted from it.",
+  "notes": [
+    "A Deployment is not the pipeline or tooling that executed it",
+    "deployment separates the orchestration act of deploying from the entity fact of a running service, mirroring the build/artifact split in CI"
+  ],
+  "examples": [
+    "Deploying myapp v1.2.3 to the production environment",
+    "A Spinnaker pipeline execution that rolls out a service to a Kubernetes cluster"
+  ],
+  "counterExamples": [
+    "The pipeline that performed the deployment"
+  ]
+}
