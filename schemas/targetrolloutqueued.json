@@ -110,7 +110,8 @@
             "name",
             "target",
             "environment",
-            "artifactId"
+            "artifactId",
+            "deploymentId"
           ]
         }
       },

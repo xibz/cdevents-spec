@@ -14,14 +14,14 @@ Continuous Deployment (CD) events are related to continuous deployment pipelines
 
 ## Subjects
 
-This specification defines four subjects in this stage: `environment`, `service`, `deployment`, and `targetRollout`. The term `service` is used to represent a running Artifact. A `service` can represent a binary that is running, a daemon, an application, a docker container. The term `environment` represent any platform which has all the means to run a `service`. A `deployment` is the aggregate act of applying a version of a release unit to one or more `targetRollout`s, and a `targetRollout` is a specific destination within an environment to which a release unit is deployed.
+This specification defines four subjects in this stage: `environment`, `service`, `deployment`, and `targetRollout`. The term `service` is used to represent a running Artifact. A `service` can represent a binary that is running, a daemon, an application, a docker container. The term `environment` represent any platform which has all the means to run a `service`. A `deployment` is the aggregate act of applying a version of a release unit to one or more `targetRollout`s, and a `targetRollout` is the act of deploying a release unit to a single destination within an environment.
 
 | Subject | Description | Predicates |
 |---------|-------------|------------|
 | [`environment`](#environment) | An environment where to run services | [`created`](#environment-created), [`modified`](#environment-modified), [`deleted`](#environment-deleted)|
 | [`service`](#service) | A service | [`deployed`](#service-deployed), [`upgraded`](#service-upgraded), [`rolledback`](#service-rolledback), [`removed`](#service-removed), [`published`](#service-published)|
 | [`deployment`](#deployment) | The aggregate act of deploying a release unit to one or more target rollouts | [`queued`](#deployment-queued), [`started`](#deployment-started), [`finished`](#deployment-finished)|
-| [`targetRollout`](#targetrollout) | A specific deployment destination within an environment | [`queued`](#targetrollout-queued), [`started`](#targetrollout-started), [`finished`](#targetrollout-finished)|
+| [`targetRollout`](#targetrollout) | The rollout of a deployment to a single destination within an environment | [`queued`](#targetrollout-queued), [`started`](#targetrollout-started), [`finished`](#targetrollout-finished)|
 
 ### `environment`
 
@@ -58,7 +58,7 @@ A `deployment` is the act of applying a version of a release unit to one or more
 
 ### `targetRollout`
 
-A `targetRollout` is a specific destination within an environment to which a release unit may be deployed and made available, for example a Kubernetes namespace in a particular region, or a named blue/green slot. A `targetRollout` is always contained within an environment, and multiple target rollouts may exist within a single environment. Each `targetRollout` carries a `deploymentId` reference back to its parent [`deployment`](#deployment). This also gives [`environment`](#environment) a first-class inbound link to what has been deployed into it: `environment created`/`modified`/`deleted` describe the platform alone, and previously the only way to associate an environment with what is running in it was to inspect `service` events, where the reference points the other way, from the entity back down to the environment it happens to run in. `targetRollout` events point from the act of deploying to the destination, so "what was rolled out to this environment" is a direct query rather than an inference over `service` events.
+A `targetRollout` is the act of deploying a release unit to a single destination within an environment, as one part of a [`deployment`](#deployment). The destination itself, for example a Kubernetes namespace in a particular region or a named blue/green slot, is identified by the `target` and `environment` fields. A `targetRollout` is always contained within an environment, and multiple target rollouts may exist within a single environment. Each `targetRollout` carries a `deploymentId` reference back to its parent [`deployment`](#deployment). This also gives [`environment`](#environment) a first-class inbound link to what has been deployed into it: `environment created`/`modified`/`deleted` describe the platform alone, and previously the only way to associate an environment with what is running in it was to inspect `service` events, where the reference points the other way, from the entity back down to the environment it happens to run in. `targetRollout` events point from the act of deploying to the destination, so "what was rolled out to this environment" is a direct query rather than an inference over `service` events.
 
 | Field | Type | Description | Examples |
 |-------|------|-------------|----------|
@@ -237,7 +237,7 @@ This event represents a deployment to a specific target rollout that has been sc
 | target | `URI-Reference` | Location identifier of where the artifact is being deployed to | `cdevents:v0:argo::my-org:prod-cluster:environment:us-east-1` | ✅ |
 | environment | `Object` ([`environment`](#environment)) | Reference to the containing environment | `{"id": "production"}` | ✅ |
 | artifactId | `Purl` | Identifier of the artifact being deployed to this target | `pkg:oci/myapp@sha256%3A0b31b1c02ff458ad9b7b81cbdf8f028bd54699fa151f221d1e8de6817db93427` | ✅ |
-| deploymentId | `String` | Reference to the parent [`deployment`](#deployment) | `dep-8f3a2c` | |
+| deploymentId | `String` | Reference to the parent [`deployment`](#deployment) | `dep-8f3a2c` | ✅ |
 
 ### [`targetRollout started`](conformance/targetrollout_started.json)
 
@@ -255,7 +255,7 @@ This event represents a deployment to a specific target rollout that has begun.
 | target | `URI-Reference` | Location identifier of where the artifact is being deployed to | `cdevents:v0:argo::my-org:prod-cluster:environment:us-east-1` | ✅ |
 | environment | `Object` ([`environment`](#environment)) | Reference to the containing environment | `{"id": "production"}` | ✅ |
 | artifactId | `Purl` | Identifier of the artifact being deployed to this target | `pkg:oci/myapp@sha256%3A0b31b1c02ff458ad9b7b81cbdf8f028bd54699fa151f221d1e8de6817db93427` | ✅ |
-| deploymentId | `String` | Reference to the parent [`deployment`](#deployment) | `dep-8f3a2c` | |
+| deploymentId | `String` | Reference to the parent [`deployment`](#deployment) | `dep-8f3a2c` | ✅ |
 
 ### [`targetRollout finished`](conformance/targetrollout_finished.json)
 
@@ -273,7 +273,7 @@ This event represents a deployment to a specific target rollout that has complet
 | target | `URI-Reference` | Location identifier of where the artifact is being deployed to | `cdevents:v0:argo::my-org:prod-cluster:environment:us-east-1` | ✅ |
 | environment | `Object` ([`environment`](#environment)) | Reference to the containing environment | `{"id": "production"}` | ✅ |
 | artifactId | `Purl` | Identifier of the artifact being deployed to this target | `pkg:oci/myapp@sha256%3A0b31b1c02ff458ad9b7b81cbdf8f028bd54699fa151f221d1e8de6817db93427` | ✅ |
-| deploymentId | `String` | Reference to the parent [`deployment`](#deployment) | `dep-8f3a2c` | |
+| deploymentId | `String` | Reference to the parent [`deployment`](#deployment) | `dep-8f3a2c` | ✅ |
 | outcome | `String (enum)` | Outcome of the finished target rollout | `success`, `failure`, `cancel`, `error` | ✅ |
 | failureType | `String (enum)` | Category of failure, only present when `outcome` is `failure` | `gate`, `build`, `evaluation`, `deployment`, `analysis` | |
 

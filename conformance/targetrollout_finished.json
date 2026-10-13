@@ -18,7 +18,7 @@
         "id": "test123"
       },
       "artifactId": "pkg:oci/myapp@sha256%3A0b31b1c02ff458ad9b7b81cbdf8f028bd54699fa151f221d1e8de6817db93427",
-      "deploymentId": "mySubject123",
+      "deploymentId": "myDeployment123",
       "outcome": "success"
     }
   }
