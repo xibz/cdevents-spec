@@ -1,7 +1,7 @@
 {
   "$id": "cdevents/_defs/deployment",
   "term": "Deployment",
-  "definition": "A Deployment is the act of applying a version of a release unit to an environment. It may be carried out by an automated CD pipeline or as a single manual action, such as a one-off `kubectl apply`; a Deployment does not require an orchestrator or pipeline to exist. A Deployment is that act and its outcome only, not the pipeline or tool that performed it, and not the resulting state of the running service, which the `service` subject describes separately.",
+  "definition": "A Deployment is the act of applying a version of an artifact to an environment. It may be carried out by an automated CD pipeline or as a single manual action, such as a one-off `kubectl apply`; a Deployment does not require an orchestrator or pipeline to exist. A Deployment is that act and its outcome only, not the pipeline or tool that performed it, and not the resulting state of the running service, which the `service` subject describes separately.",
   "notes": [
     "A Deployment is not the pipeline or tooling that executed it",
     "A Deployment does not require an orchestrator or CD pipeline to exist; a single manual action, such as a one-off `kubectl apply`, is still a deployment",

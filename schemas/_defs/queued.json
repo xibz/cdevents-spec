@@ -8,7 +8,6 @@
   ],
   "examples": [
     "A deployment accepted by a deploy controller and waiting for resources",
-    "A target rollout scheduled but not yet executing",
     "A pipeline run waiting in a queue before a worker picks it up"
   ],
   "counterExamples": [

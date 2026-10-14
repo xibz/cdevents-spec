@@ -24,9 +24,9 @@
         "type": {
           "type": "string",
           "enum": [
-            "dev.cdevents.deployment.queued.0.1.0"
+            "dev.cdevents.deployment.queued.0.1.0-draft"
           ],
-          "default": "dev.cdevents.deployment.queued.0.1.0"
+          "default": "dev.cdevents.deployment.queued.0.1.0-draft"
         },
         "timestamp": {
           "type": "string",
@@ -72,30 +72,16 @@
               "type": "string",
               "minLength": 1
             },
-            "environment": {
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "source": {
-                  "type": "string",
-                  "minLength": 1,
-                  "format": "uri-reference"
-                }
-              },
-              "additionalProperties": false,
-              "type": "object",
-              "required": [
-                "id"
-              ]
+            "tier": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "additionalProperties": false,
           "type": "object",
           "required": [
             "artifactId",
-            "environment"
+            "tier"
           ]
         }
       },

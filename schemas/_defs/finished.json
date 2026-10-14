@@ -9,7 +9,6 @@
   ],
   "examples": [
     "A deployment completing across all target rollouts",
-    "A target rollout completing at its destination",
     "A pipeline run terminating with success or failure"
   ],
   "counterExamples": [
